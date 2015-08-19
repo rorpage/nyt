@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NYT Events</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="styles/styles.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="scripts/maps.js"></script>
+    <script src="scripts/nyt.js"></script>
+  </head>
+  <body>
+      <div id="map"></div>
+      <div id="filters">
+        <div class="title">Filters</div>
+        <div class="body">
+          <label class="checkbox-inline"><input type="checkbox" value="Art">Art</label>
+          <label class="checkbox-inline"><input type="checkbox" value="Dance">Dance</label>
+          <label class="checkbox-inline"><input type="checkbox" value="forChildren">For Children</label>
+          <label class="checkbox-inline"><input type="checkbox" value="Jazz">Jazz</label>
+          <label class="checkbox-inline"><input type="checkbox" value="Movies">Movies</label>
+          <label class="checkbox-inline"><input type="checkbox" value="spareTimes">Spare Times</label>
+          <label class="checkbox-inline"><input type="checkbox" value="Theater">Theater</label>
+        </div>
+      </div>
+      <script>
+        var map, center = { lat: 40.7127, lng: -74.0059 }, filter;
+        function init() {
+          map = new google.maps.Map(document.getElementById("map"), {
+            center: center,
+            zoom: 16
+          });
+          
+          map.addListener("idle", function () {
+            Maps.BoundsChanged();
+          });
+          
+          var checkboxes = $(":checkbox");
+          checkboxes.change(function() {
+            var checkedCheckboxes = $("input[type='checkbox']:checked");
+            if (checkedCheckboxes.length > 0) {
+              filter = "&filters=category:(";
+              $.each(checkedCheckboxes, function () {
+                filter += ($(this).val() + "+");
+              });
+              filter += ")";  
+            } else {
+              filter = "";
+            }
+
+            NYT.Search();
+          });
+        }
+      </script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJyzQ6TTAtoYXkloozfEr8WhjyQ0lk1IA&callback=init"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NYT Events</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="styles/styles.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="scripts/maps.js"></script>
+    <script src="scripts/nyt.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    </div>
+    <script>
+      var map, center = { lat: 40.7127, lng: -74.0059 }, filter;
+      function init() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: center,
+          zoom: 16
+        });
+        
+        map.addListener("idle", function () {
+          Maps.BoundsChanged();
+        });
+        
+        navigator.geolocation.getCurrentPosition(updatemap);
+      }
+      
+      function updatemap (position) {
+        Maps.UpdateMap(position);
+      };
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJyzQ6TTAtoYXkloozfEr8WhjyQ0lk1IA&callback=init"></script>
+  </body>
+</html>
